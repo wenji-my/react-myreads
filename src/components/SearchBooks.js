@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import * as BooksAPI from '../utils/BooksAPI'
+import * as BooksAPI from '../utils/BooksAPI';
 import Book from "./Book";
 
 class SearchBooks extends Component {
@@ -13,7 +13,7 @@ class SearchBooks extends Component {
 
     updateDom = (key, resultDom) => {
         if (key && key === this.state.query) {
-            //防止用户输入过快导致最后输入完整内容的搜索结果被只有前面一部分内容的搜索结果覆盖，比如完整内容是he，显示的却是h的搜索结果（原因是请求he返回数据的速度比请求h返回数据的速度快）
+            //防止用户输入过快导致最后输入完整内容的搜索结果被只有前面一部分内容的搜索结果覆盖，比如完整内容是he，显示的却是h的搜索结果（原因是每输入一个字符都会发送请求，所以可能导致请求he返回数据的速度比请求h返回数据的速度快）
             let val = this.state.cacheHistory.get(key)
             this.setState({
                 resultDom: val
@@ -51,34 +51,40 @@ class SearchBooks extends Component {
                             <p>Can't find the Book.</p>
                         </div>
                     </div>))
+                    this.updateDom(query,null)
                 } else {
                     //成功返回数据
-                    cacheHistory.set(query,(<div className="search-books-results">
-                        <ol className="books-grid">
-                            {data.map((book, index) => {
-                                let dom;
-                                //有些数据没有图片链接
-                                if (book.imageLinks) {
-                                    dom = (<li key={index}>
-                                        <Book url={book.imageLinks.thumbnail} title={book.title} authors={book.authors}/>
-                                    </li>)
-                                } else {
-                                    console.log(book)
-                                }
-                                return dom
-                            })}
-                        </ol>
-                    </div>))
+                    let liDom = []
+                    data.forEach((book,index) => {
+                        BooksAPI.get(book.id).then(res => {
+                            book.shelf = res.shelf
+                            liDom.push((<li key={index}>
+                                <Book book={book} updateBookShelf={(book,targetShelf) => {this.updateShelf(book,targetShelf)}}/>
+                            </li>))
+                            if (index === data.length-1) {
+                                cacheHistory.set(query,(<div className="search-books-results">
+                                    <ol className="books-grid">
+                                        {liDom.map((dom) => (dom))}
+                                    </ol>
+                                </div>))
+                                this.updateDom(query,null)
+                            }
+                        })
+                    })
                 }
-                this.updateDom(query,null)
+
             })
         }
 
     }
 
+    updateShelf = (book,targetShelf) => {
+        this.props.updateBookShelf(book, targetShelf)
+    }
+
     render() {
 
-        const {query,resultDom} = this.state;
+        const {resultDom} = this.state;
 
         return (
             <div className="search-books">

@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 
 class Book extends Component {
+
+    state = {
+        selectName: this.props.book.shelf
+    }
+
+    changeSelect = (e) => {
+        this.setState({ selectName: e.target.value });
+        this.props.updateBookShelf(this.props.book,e.target.value)
+    }
+
     render() {
 
-        let authors = this.props.authors;
+        let book = this.props.book;
+        let authors = book.authors;
         if (authors) {
             authors = authors.join()
         }
@@ -11,18 +22,19 @@ class Book extends Component {
             <div className="book">
                 <div className="book-top">
                     <div>
-                        <img className="book-cover" style={{ width: 128}} src={this.props.url} alt=""/>
+                        <img className="book-cover" style={{ width: 128}} src={book.imageLinks ? book.imageLinks.thumbnail:''} alt=""/>
                     </div>
                     <div className="book-shelf-changer">
-                        {/*<ul className="as">*/}
-                            {/*<li><i className="fa fa-check check-icon"></i><span>Currently Reading</span></li>*/}
-                            {/*<li><i className="fa fa-check"></i><span>Want to Read</span></li>*/}
-                            {/*<li><i className="fa fa-check"></i><span>Read</span></li>*/}
-                            {/*<li><i className="fa fa-check"></i><span>None</span></li>*/}
-                        {/*</ul>*/}
+                        <select value={this.state.selectName} onChange={(e) => {this.changeSelect(e)}}>
+                            <option value="none" disabled>Move to...</option>
+                            <option value="currentlyReading">{this.state.selectName === 'currentlyReading'?' √ ':''}Currently Reading</option>
+                            <option value="wantToRead">{this.state.selectName === 'wantToRead'?' √ ':''}Want to Read</option>
+                            <option value="read">{this.state.selectName === 'read'?' √ ':''}Read</option>
+                            <option value="none">None</option>
+                        </select>
                     </div>
                 </div>
-                <div className="book-title">{this.props.title}</div>
+                <div className="book-title">{book.title}</div>
                 <div className="book-authors">{authors}</div>
             </div>
         )
