@@ -8,11 +8,11 @@ React
 
 ## 安装
 
-1.首先从GitHub上把项目克隆到本地仓库
+1.首先从GitHub上把项目克隆到本地仓库<br>
 ```git clone https://github.com/wenji-my/mymap.git```<br>
 
-2.然后在终端切换到react-myreads目录下
-```npm start```
-or
-```yarn start```
-便可启动应用
+2.然后在终端切换到react-myreads目录下<br>
+```npm start```<br>
+or<br>
+```yarn start```<br>
+便可启动应用<br>
