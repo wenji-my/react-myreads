@@ -19,10 +19,9 @@ class SearchBooks extends Component {
                 resultDom: val
             })
         } else {
-            //显示空内容和正在搜索的页面
-            this.setState({
-                resultDom: resultDom
-            })
+            // this.setState({
+            //     resultDom: resultDom
+            // })
         }
     };
 
@@ -36,11 +35,19 @@ class SearchBooks extends Component {
         })
         if (!query) {
             //搜索内容为空，什么都不显示
-            this.updateDom(null,null);
+            // this.updateDom(null,null);
+            //显示空内容和正在搜索的页面
+            this.setState({
+                resultDom: null
+            })
         } else {
             //只要输入内容就提示用户正在搜索
             resultDom = (<div className="searching">searching...</div>);
-            this.updateDom(null,resultDom);
+            // this.updateDom(null,resultDom);
+            //显示空内容和正在搜索的页面
+            this.setState({
+                resultDom: resultDom
+            })
             //发送请求
             BooksAPI.search(query).then((data) => {
                 if (data.error) {
