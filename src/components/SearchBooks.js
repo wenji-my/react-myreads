@@ -11,17 +11,13 @@ class SearchBooks extends Component {
         resultDom: null
     };
 
-    updateDom = (key, resultDom) => {
+    updateDom = (key) => {
         if (key && key === this.state.query) {
             //防止用户输入过快导致最后输入完整内容的搜索结果被只有前面一部分内容的搜索结果覆盖，比如完整内容是he，显示的却是h的搜索结果（原因是每输入一个字符都会发送请求，所以可能导致请求he返回数据的速度比请求h返回数据的速度快）
             let val = this.state.cacheHistory.get(key)
             this.setState({
                 resultDom: val
             })
-        } else {
-            // this.setState({
-            //     resultDom: resultDom
-            // })
         }
     };
 
@@ -35,7 +31,6 @@ class SearchBooks extends Component {
         })
         if (!query) {
             //搜索内容为空，什么都不显示
-            // this.updateDom(null,null);
             //显示空内容和正在搜索的页面
             this.setState({
                 resultDom: null
@@ -43,7 +38,6 @@ class SearchBooks extends Component {
         } else {
             //只要输入内容就提示用户正在搜索
             resultDom = (<div className="searching">searching...</div>);
-            // this.updateDom(null,resultDom);
             //显示空内容和正在搜索的页面
             this.setState({
                 resultDom: resultDom
