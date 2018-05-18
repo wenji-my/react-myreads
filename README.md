@@ -4,6 +4,9 @@
 
 主页面还有一个“搜索”链接，该链接是一个搜索页面，使你能够查找图书并将其添加到书库中。当你从搜索页面返回主页面时，可以立即看到在书库的搜索页面所做的所有选择。
 
+## 部分效果截图
+![Image text](https://github.com/wenji-my/react-myreads/blob/master/screenshot/reads.gif)
+
 ## 使用
 
 ```
